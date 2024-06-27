@@ -1,16 +1,36 @@
+data "aws_vpc" "main" {
+  filter {
+    name   = "tag:Name"
+    values = ["main"]
+  }
+}
+
+data "aws_subnets" "public" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.main.id]
+  }
+  filter {
+    name   = "tag:Name"
+    values = ["*-public-*"]
+  }
+}
+
 module "elasticache" {
-  source = "terraform-aws-modules/elasticache/aws"
+  source  = "terraform-aws-modules/elasticache/aws"
+  version = "v1.2.0"
 
-  create_cluster  = true
+
+  create_cluster           = true
   create_replication_group = false
-  cluster_id      = "memcached-cluster"
-  engine          = "memcached"
-  node_type       = "cache.t2.micro"
-  num_cache_nodes = 1
+  cluster_id               = "memcached-cluster"
+  engine                   = "memcached"
+  node_type                = "cache.t2.micro"
+  num_cache_nodes          = 1
 
-  create_parameter_group = true
-  parameter_group_name = "memcached-cluster-pg"
-  parameter_group_family = "memcached1.6"
+  create_parameter_group     = true
+  parameter_group_name       = "memcached-cluster-pg"
+  parameter_group_family     = "memcached1.6"
   transit_encryption_enabled = false
   parameters = [
     {

@@ -1,7 +1,36 @@
-module "alb" {
-  source = "terraform-aws-modules/alb/aws"
+data "aws_vpc" "main" {
+  filter {
+    name   = "tag:Name"
+    values = ["main"]
+  }
+}
 
+data "aws_ecs_cluster" "main" {
+  cluster_name = var.ecs_cluster_name
+}
+
+data "aws_subnets" "public" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.main.id]
+  }
+  filter {
+    name   = "tag:Name"
+    values = ["*-public-*"]
+  }
+}
+
+data "aws_instance" "ecs_instance" {
+  filter {
+    name   = "image-id"
+    values = ["ami-05d6c5e5d6fc4f650"]
+  }
+}
+
+module "alb" {
+  source  = "terraform-aws-modules/alb/aws"
   version = "v9.9.0"
+
   name    = "frontend-alb"
   vpc_id  = data.aws_vpc.main.id
   subnets = data.aws_subnets.public.ids
@@ -31,8 +60,8 @@ module "alb" {
 
   listeners = {
     http = {
-      port            = 80
-      protocol        = "HTTP"
+      port     = 80
+      protocol = "HTTP"
 
       forward = {
         target_group_key = "frontend_tg"
@@ -42,27 +71,25 @@ module "alb" {
 
   target_groups = {
     frontend_tg = {
-      name_prefix      = "front"
-      protocol         = "HTTP"
-      port             = 80
-      target_type      = "instance"
+      name_prefix       = "front"
+      protocol          = "HTTP"
+      port              = 80
+      target_type       = "instance"
       create_attachment = false
     }
-    
+
   }
 }
 
 module "ecs_service" {
-  source = "terraform-aws-modules/ecs/aws//modules/service"
+  source  = "terraform-aws-modules/ecs/aws//modules/service"
+  version = "5.11.2"
 
-  name        = "hello-world-frontend"
-  cluster_arn = data.aws_ecs_cluster.main.arn
-  launch_type = "EC2"
-  network_mode = "bridge"
-  requires_compatibilities = ["EC2"]
+  name          = "hello-world-frontend"
+  cluster_arn   = data.aws_ecs_cluster.main.arn
   desired_count = 1
-  cpu    = 256
-  memory = 256
+  cpu           = 256
+  memory        = 256
 
   container_definitions = {
     app = {
@@ -80,10 +107,10 @@ module "ecs_service" {
       ]
       environment = [
         {
-        # We'd use something better than this really, using the external address is simpler for
-        # demo purposes.
-        name  = "API_URL"
-        value = "http://${data.aws_instance.ecs_instance.public_ip}:8080"
+          # We'd use something better than this really, using the external address is simpler for
+          # demo purposes.
+          name  = "API_URL"
+          value = "http://${data.aws_instance.ecs_instance.public_ip}:8080"
         }
       ]
 
@@ -91,7 +118,7 @@ module "ecs_service" {
       readonly_root_filesystem = true
 
       enable_cloudwatch_logging = false
-      memory_reservation = 100
+      memory_reservation        = 100
     }
   }
 
@@ -108,12 +135,13 @@ module "ecs_service" {
 
 module "ecr" {
   source = "terraform-aws-modules/ecr/aws"
+  version = "v2.2.1"
 
   repository_name = "hello-world-frontend"
   repository_type = "private"
 
   repository_read_write_access_arns = ["arn:aws:iam::${var.account_number}:root"]
-  create_lifecycle_policy = true
+  create_lifecycle_policy           = true
   repository_lifecycle_policy = jsonencode({
     rules = [
       {

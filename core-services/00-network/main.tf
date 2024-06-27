@@ -1,5 +1,9 @@
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source  = "terraform-aws-modules/vpc/aws"
   version = "5.8.0"
 
   name = "main"

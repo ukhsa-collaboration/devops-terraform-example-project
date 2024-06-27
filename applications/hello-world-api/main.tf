@@ -1,14 +1,38 @@
-module "ecs_service" {
-  source = "terraform-aws-modules/ecs/aws//modules/service"
+data "aws_vpc" "main" {
+  filter {
+    name   = "tag:Name"
+    values = ["main"]
+  }
+}
 
-  name        = "hello-world-api"
-  cluster_arn = data.aws_ecs_cluster.main.arn
-  launch_type = "EC2"
-  network_mode = "bridge"
-  requires_compatibilities = ["EC2"]
+data "aws_ecs_cluster" "main" {
+  cluster_name = var.ecs_cluster_name
+}
+
+data "aws_elasticache_cluster" "memcached" {
+  cluster_id = "memcached-cluster"
+}
+
+data "aws_subnets" "public" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.main.id]
+  }
+  filter {
+    name   = "tag:Name"
+    values = ["*-public-*"]
+  }
+}
+
+module "ecs_service" {
+  source  = "terraform-aws-modules/ecs/aws//modules/service"
+  version = "5.11.2"
+
+  name          = "hello-world-api"
+  cluster_arn   = data.aws_ecs_cluster.main.arn
   desired_count = 1
-  cpu    = 256
-  memory = 256
+  cpu           = 256
+  memory        = 256
 
   container_definitions = {
     app = {
@@ -38,7 +62,7 @@ module "ecs_service" {
       readonly_root_filesystem = true
 
       enable_cloudwatch_logging = false
-      memory_reservation = 100
+      memory_reservation        = 100
     }
   }
 
@@ -46,13 +70,14 @@ module "ecs_service" {
 }
 
 module "ecr" {
-  source = "terraform-aws-modules/ecr/aws"
+  source  = "terraform-aws-modules/ecr/aws"
+  version = "v2.2.1"
 
   repository_name = "hello-world-api"
   repository_type = "private"
 
   repository_read_write_access_arns = ["arn:aws:iam::${var.account_number}:root"]
-  create_lifecycle_policy = true
+  create_lifecycle_policy           = true
   repository_lifecycle_policy = jsonencode({
     rules = [
       {

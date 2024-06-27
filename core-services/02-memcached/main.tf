@@ -17,7 +17,7 @@ data "aws_subnets" "public" {
 }
 
 module "elasticache" {
-  source   = "terraform-aws-modules/elasticache/aws"
+  source  = "terraform-aws-modules/elasticache/aws"
   version = "v1.2.0"
 
 

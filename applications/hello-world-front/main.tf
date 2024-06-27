@@ -134,7 +134,7 @@ module "ecs_service" {
 }
 
 module "ecr" {
-  source = "terraform-aws-modules/ecr/aws"
+  source  = "terraform-aws-modules/ecr/aws"
   version = "v2.2.1"
 
   repository_name = "hello-world-frontend"

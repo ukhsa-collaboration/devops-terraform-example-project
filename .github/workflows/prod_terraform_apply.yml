@@ -1,0 +1,20 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  prod_deploy:
+    name: Deploy Production Terraform 
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-ci.yml@main
+    permissions:
+      packages: read
+      contents: read
+      security-events: write
+    with:
+      environment_name: prod
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_ROLE_NAME: ${{ secrets.AWS_ROLE_NAME }}

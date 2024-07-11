@@ -1,0 +1,9 @@
+{
+    "dependencies": {
+        "paths": [
+            "./core-services/network",
+            "./core-services/ecs",
+            "./core-services/memcached"
+        ]
+    }
+}

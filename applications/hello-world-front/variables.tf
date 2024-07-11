@@ -13,8 +13,3 @@ variable "vpc_cidr_block" {
   description = "The CIDR block of the VPC that the project uses"
   type        = string
 }
-
-variable "account_number" {
-  description = "The AWS account number where the workload will run"
-  type        = string
-}

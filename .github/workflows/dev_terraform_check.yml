@@ -1,0 +1,15 @@
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  dev_check:
+    name: Check Development Terraform
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-code-check.yml@main
+    permissions:
+      packages: read
+      contents: read
+      security-events: write
+      statuses: write
+      checks: write

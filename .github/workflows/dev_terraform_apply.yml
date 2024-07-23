@@ -11,6 +11,8 @@ jobs:
       packages: read
       contents: read
       security-events: write
+      statuses: write
+      checks: write
     with:
       environment_name: dev
     secrets:

@@ -10,7 +10,9 @@
 .terraform.lock.hcl
 
 # Act secrets
-# .secret*
+.secret
+.github/act/.secret
+!.github/act/.secret
 
 # Crash log files
 crash.log

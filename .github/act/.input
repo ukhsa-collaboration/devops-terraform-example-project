@@ -1,0 +1,8 @@
+environment_name='dev'
+aws_region='eu-west-2'
+stack=''
+run_formatting=true
+run_tflint=true
+run_light_sast=true
+run_deep_sast=true
+plan=true

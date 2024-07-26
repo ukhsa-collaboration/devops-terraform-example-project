@@ -9,6 +9,9 @@
 .terraform/
 .terraform.lock.hcl
 
+# Act secrets
+# .secret*
+
 # Crash log files
 crash.log
 crash.*.log

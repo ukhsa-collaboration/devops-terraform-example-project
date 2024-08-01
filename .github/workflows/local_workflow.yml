@@ -1,0 +1,20 @@
+on:
+  workflow_call:
+
+jobs:
+  local_deploy:
+    name: Local IaC development workflow
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-local-workflow.yml@main
+    permissions:
+      packages: read
+      contents: read
+      security-events: write
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_ROLE_NAME: ${{ secrets.AWS_ROLE_NAME }}
+      AZURE_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+      AZURE_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+      AZURE_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"

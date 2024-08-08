@@ -1,3 +1,4 @@
+name: "[CI] Deploy Terraform stacks"
 on:
   push:
     branches:

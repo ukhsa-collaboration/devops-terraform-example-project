@@ -1,5 +1,6 @@
+name: "Local IaC development workflow"
 on:
-  workflow_call:
+  workflow_dispatch:
 
 jobs:
   local_deploy:
@@ -10,7 +11,7 @@ jobs:
       contents: read
       security-events: write
     secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}

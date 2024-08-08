@@ -1,3 +1,4 @@
+name: "[Analysis] Check Terraform Code"
 on:
   pull_request:
     branches:

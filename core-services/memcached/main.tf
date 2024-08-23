@@ -18,7 +18,7 @@ data "aws_subnets" "public" {
 
 module "elasticache" {
   source  = "terraform-aws-modules/elasticache/aws"
-  version = "v1.2.0"
+  version = "v1.2.2"
 
 
   create_cluster           = true

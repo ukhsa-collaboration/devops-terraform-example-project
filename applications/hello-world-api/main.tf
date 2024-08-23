@@ -28,7 +28,7 @@ data "aws_caller_identity" "current" {}
 
 module "ecs_service" {
   source  = "terraform-aws-modules/ecs/aws//modules/service"
-  version = "5.11.2"
+  version = "5.11.4"
 
   name          = "hello-world-api"
   cluster_arn   = data.aws_ecs_cluster.main.arn

@@ -24,7 +24,7 @@ data "aws_caller_identity" "current" {}
 
 module "alb" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "v9.9.0"
+  version = "v9.11.0"
 
   name    = "frontend-alb"
   vpc_id  = data.aws_vpc.main.id

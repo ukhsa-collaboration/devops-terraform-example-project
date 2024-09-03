@@ -1,14 +1,18 @@
-name: "[CI] Deploy Terraform stacks to Dev"
+name: "[CI] Deploy Terraform stacks to QAT"
 on:
-  push:
+  workflow_run:
+    workflows: ["[CI] Deploy Terraform stacks to Dev"]
+    types:
+      - completed
     branches:
       - main
 
 jobs:
-  dev_deploy:
-    name: Deploy Development Terraform
+  qat_deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Deploy QAT Terraform
     concurrency:
-      group: "dev-main"
+      group: "qat-main"
     uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@main
     permissions:
       packages: read
@@ -18,7 +22,7 @@ jobs:
       checks: write
       id-token: write
     with:
-      environment_name: dev
+      environment_name: qat
       tf_action: apply
     secrets:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}

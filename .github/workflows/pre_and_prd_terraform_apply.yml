@@ -1,0 +1,49 @@
+name: "[CI] Deploy Terraform stacks"
+on:
+  workflow_dispatch:
+    inputs:
+      environment_name:
+        description: 'Environment to run against'
+        type: environment
+        required: true
+        options:
+          - 'dev'
+          - 'pre'
+          - 'prd'
+      tf_action:
+        description: 'Terraform action to execute'
+        required: false
+        type: string
+        default: 'plan'
+        options:
+          - 'plan'
+          - 'apply'
+      destroy_before_apply:
+        description: 'Whether to execute a terraform destroy prior to applying'
+        required: false
+        type: boolean
+        default: false
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  deploy:
+    name: "Deploy ${{ inputs.environment_name }} Terraform"
+    concurrency:
+      group: "main"
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@main
+    permissions:
+      packages: read
+      contents: read
+      security-events: write
+      statuses: write
+      checks: write
+      id-token: write
+    with:
+      environment_name: ${{ inputs.environment_name }}
+      tf_action: ${{ inputs.tf_action }}
+      destroy_before_apply: ${{ inputs.destroy_before_apply }}
+    secrets:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_ROLE_NAME: ${{ secrets.AWS_ROLE_NAME }}

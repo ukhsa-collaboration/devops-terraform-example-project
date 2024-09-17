@@ -1,3 +1,21 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json"
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "assigneesFromCodeOwners": true,
+  "prCreation": "immediate",
+  "packageRules": [
+      {
+        "matchManagers": [
+          "terraform"
+        ],
+        "matchUpdateTypes": ["minor", "patch"],
+        "groupName": "Terraform Updates (non-major)"
+      },
+      {
+        "matchManagers": [
+          "github-actions"
+        ],
+        "matchUpdateTypes": ["minor", "patch"],
+        "groupName": "Github Actions (non-major)"
+      }
+    ]
 }

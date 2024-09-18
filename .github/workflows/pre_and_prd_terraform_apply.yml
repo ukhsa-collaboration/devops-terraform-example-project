@@ -4,7 +4,7 @@ on:
     inputs:
       environment_name:
         description: 'Environment to run against'
-        type: environment
+        type: choice
         required: true
         options:
           - 'dev'
@@ -13,7 +13,7 @@ on:
       tf_action:
         description: 'Terraform action to execute'
         required: false
-        type: string
+        type: choice
         default: 'plan'
         options:
           - 'plan'
@@ -21,8 +21,8 @@ on:
       destroy_before_apply:
         description: 'Whether to execute a terraform destroy prior to applying'
         required: false
-        type: boolean
-        default: false
+        type: choice
+        default: 'false'
         options:
           - 'true'
           - 'false'
@@ -32,7 +32,7 @@ jobs:
     name: "Deploy ${{ inputs.environment_name }} Terraform"
     concurrency:
       group: "main"
-    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@main
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v0.5.0
     permissions:
       packages: read
       contents: read
@@ -42,8 +42,7 @@ jobs:
       id-token: write
     with:
       environment_name: ${{ inputs.environment_name }}
-      tf_action: ${{ inputs.tf_action }}
-      destroy_before_apply: ${{ inputs.destroy_before_apply }}
+      execute_terraform_plan: true
     secrets:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
       AWS_ROLE_NAME: ${{ secrets.AWS_ROLE_NAME }}

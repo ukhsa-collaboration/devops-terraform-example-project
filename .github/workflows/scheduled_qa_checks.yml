@@ -6,7 +6,7 @@ on:
     inputs:
       environment_name:
         description: 'Environment to run against'
-        type: environment
+        type: choice
         required: true
         default: 'dev'
         options:

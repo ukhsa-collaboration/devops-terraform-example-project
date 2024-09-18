@@ -7,12 +7,18 @@ on:
 jobs:
   dev_check:
     name: Check Development Terraform
-    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-code-check.yml@main
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v0.5.0
     permissions:
       packages: read
       contents: read
       security-events: write
       statuses: write
       checks: write
+      id-token: write
     with:
       tflint_module_scan: true
+      execute_terraform_plan: false
+    secrets:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_ROLE_NAME: ${{ secrets.AWS_ROLE_NAME }}
+  

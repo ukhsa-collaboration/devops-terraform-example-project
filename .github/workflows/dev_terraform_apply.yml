@@ -9,7 +9,7 @@ jobs:
     name: Deploy Development Terraform
     concurrency:
       group: "dev-main"
-    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@main
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v0.5.0
     permissions:
       packages: read
       contents: read
@@ -19,7 +19,7 @@ jobs:
       id-token: write
     with:
       environment_name: dev
-      tf_action: apply
+      execute_terraform_plan: true
     secrets:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
       AWS_ROLE_NAME: ${{ secrets.AWS_ROLE_NAME }}

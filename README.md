@@ -15,8 +15,8 @@ This repository contains the Terraform configurations to deploy the `hello-world
   - `dev.tfvars`: Terraform variables for the development environment.
   - `prod.tfvars`: Terraform variables for the production environment.
 - `global.tfvars`: Global Terraform variables.
-- `providers.tf`: Terraform provider configurations. This file is copied during the Github Actions workflow to each directory where it is needed. CLI flags are then passed in to use the correct backend.
-- `terraform.tf`: Terraform version configuration. This file is copied during the Github Actions workflow to each directory where it is needed. 
+- `providers.tf`: Terraform provider configurations. If this file doesn't exist within the stack directory, the providers.tf at the root of the directory is copied during the Github Actions workflow to where it is needed. CLI flags are then passed in to use the correct backend.
+- `terraform.tf`: Terraform version configuration. If this file doesn't exist within the stack directory, the terraform.tf at the root of the directory is copied during the Github Actions workflow to where it is needed.
 
 ## Terraform Stacks
 
@@ -75,10 +75,6 @@ The dependencies.json **MUST** validate against the schema below. If there are n
     }
 }
 ```
-
-## `providers.tf` and `terraform.tf`
-
-Both of these files exist at the root of the project and are copied into each stack as part of the Github Actions workflow. This allows the versions files to be kept [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself). This behaviour can be overriden by placing a `provider.tf` or `terraform.tf` file into the stack's directory. However, this **SHOULD NOT** be done as a matter of routine and but can used for extraordinary circumstances.
 
 ## Usage of Terraform AWS Modules
 

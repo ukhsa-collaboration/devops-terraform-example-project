@@ -7,7 +7,6 @@
 
 # Backup files
 .terraform/
-.terraform.lock.hcl
 
 # Act secrets
 .secret

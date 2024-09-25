@@ -110,7 +110,7 @@ module "ecs_service" {
 
 module "ecr" {
   source  = "terraform-aws-modules/ecr/aws"
-  version = "v2.2.1"
+  version = "v2.3.0"
 
   repository_name = "hello-world-api"
   repository_type = "private"

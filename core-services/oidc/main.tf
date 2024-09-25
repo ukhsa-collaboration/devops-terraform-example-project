@@ -1,5 +1,5 @@
 module "aws-oidc-github" {
-  source = "git::ssh://git@github.com/UKHSA-Internal/devops-terraform-modules//terraform-modules/aws/oidc?ref=8e2891e661b95fe30d9bd3b42ccc80e4c356f16a"
+  source = "git::ssh://git@github.com/UKHSA-Internal/devops-terraform-modules//terraform-modules/aws/oidc?ref=0491d5442d3e97d71a63dd14bfdc69a66e67551a"
 
   repo_name = "UKHSA-Internal/devops-terraform-example-project"
   additional_allowed_repos = {

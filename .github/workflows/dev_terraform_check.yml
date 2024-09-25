@@ -7,7 +7,7 @@ on:
 jobs:
   dev_check:
     name: Check Development Terraform
-    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v0.5.0
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v0.6.0
     permissions:
       packages: read
       contents: read
@@ -21,4 +21,5 @@ jobs:
     secrets:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
       AWS_ROLE_NAME: ${{ secrets.AWS_ROLE_NAME }}
+      TF_MODULES_SSH_DEPLOY_KEY: ${{ secrets.TF_MODULES_SSH_DEPLOY_KEY }}
   

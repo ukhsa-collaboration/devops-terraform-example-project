@@ -1,0 +1,23 @@
+name: "[Analysis] Run scheduled destroy job"
+on:
+  schedule:
+    - cron: '0 19 * * 1-5' # Every weekday at 19:00
+
+jobs:
+  dev_destroy:
+    name: Deploy Development Terraform
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-destroy.yml@v0.6.0
+    permissions:
+      packages: read
+      contents: read
+      security-events: write
+      statuses: write
+      checks: write
+      id-token: write
+    with:
+      environment_name: dev
+      execute_terraform_plan: true
+    secrets:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_ROLE_NAME: ${{ secrets.AWS_ROLE_NAME }}
+      TF_MODULES_SSH_DEPLOY_KEY: ${{ secrets.TF_MODULES_SSH_DEPLOY_KEY }}

@@ -30,6 +30,7 @@ module "alb" {
   vpc_id  = data.aws_vpc.main.id
   subnets = data.aws_subnets.public.ids
 
+  enable_deletion_protection = false
   security_group_ingress_rules = {
     all_http = {
       from_port   = 80
@@ -168,8 +169,9 @@ module "ecr" {
   source  = "terraform-aws-modules/ecr/aws"
   version = "v2.3.0"
 
-  repository_name = "hello-world-frontend"
-  repository_type = "private"
+  repository_name         = "hello-world-frontend"
+  repository_type         = "private"
+  repository_force_delete = true
 
   repository_read_write_access_arns = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
   create_lifecycle_policy           = true

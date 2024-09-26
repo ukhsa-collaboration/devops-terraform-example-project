@@ -112,8 +112,9 @@ module "ecr" {
   source  = "terraform-aws-modules/ecr/aws"
   version = "v2.3.0"
 
-  repository_name = "hello-world-api"
-  repository_type = "private"
+  repository_name         = "hello-world-api"
+  repository_type         = "private"
+  repository_force_delete = true
 
   repository_read_write_access_arns = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
   create_lifecycle_policy           = true

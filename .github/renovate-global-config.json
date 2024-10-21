@@ -5,9 +5,7 @@
     "onboarding": true,
     "platform": "github",
     "includeForks": true,
-    "repositories": [
-      "UKHSA-Internal/devops-terraform-example-project"
-    ],
+    "autodiscover": true,
     "packageRules": [
       {
         "description": "lockFileMaintenance",

@@ -1,15 +1,19 @@
-name: "Deploy Terraform stacks in Development"
+name: "Deploy Terraform stacks in Production"
 on:
-  push:
-    branches:
+  workflow_run:
+    workflows: ["Deploy Terraform stacks to QAT"]
+    types:
+      - completed
+    branches: 
       - main
 
 jobs:
   deploy:
-    name: Deploy Development Terraform
+    name: Deploy Production Terraform
     uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v0.11.0
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     concurrency:
-      group: "dev-main"
+      group: "prd-main"
     permissions:
       packages: read
       contents: read
@@ -18,11 +22,9 @@ jobs:
       checks: write
       id-token: write
     with:
-      environment_name: dev
+      environment_name: prd
       execute_terraform_plan: true
     secrets:
-      # Github environments would be better here but can't be used in
-      # UKHSA-Collobration because it's a Free-tier organisation.
-      AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID_DEV }}"
+      AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID_PRD }}"
       AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}" 
       TF_MODULES_SSH_DEPLOY_KEY: "${{ secrets.TF_MODULES_SSH_DEPLOY_KEY }}"

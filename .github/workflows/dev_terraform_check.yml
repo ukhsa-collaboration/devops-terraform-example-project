@@ -1,13 +1,13 @@
-name: "[Analysis] Check Terraform Code"
+name: "Plan Terraform stacks in Development"
 on:
   pull_request:
     branches:
       - main
 
 jobs:
-  dev_check:
-    name: Check Development Terraform
-    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v0.6.0
+  plan:
+    name: Plan Development Terraform
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v0.11.0
     permissions:
       packages: read
       contents: read
@@ -16,10 +16,8 @@ jobs:
       checks: write
       id-token: write
     with:
-      tflint_module_scan: true
+      environment_name: dev
       execute_terraform_plan: false
     secrets:
-      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      AWS_ROLE_NAME: ${{ secrets.AWS_ROLE_NAME }}
-      TF_MODULES_SSH_DEPLOY_KEY: ${{ secrets.TF_MODULES_SSH_DEPLOY_KEY }}
-  
+      AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID_DEV }}"
+      AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}" 

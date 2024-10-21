@@ -69,7 +69,7 @@ module "alb" {
     frontend_tg = {
       name_prefix       = "front"
       protocol          = "HTTP"
-      port              = 80
+      port              = 5000
       target_type       = "ip"
       create_attachment = false
     }

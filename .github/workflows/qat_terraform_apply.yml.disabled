@@ -1,0 +1,30 @@
+name: "Deploy Terraform stacks to QAT"
+on:
+  workflow_run:
+    workflows: ["Deploy Terraform stacks in Development"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy QAT Terraform
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v0.11.0
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    concurrency:
+      group: "qat-main"
+    permissions:
+      packages: read
+      contents: read
+      security-events: write
+      statuses: write
+      checks: write
+      id-token: write
+    with:
+      environment_name: qat
+      execute_terraform_plan: true
+    secrets:
+      AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID_QAT }}"
+      AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}"
+      TF_MODULES_SSH_DEPLOY_KEY: "${{ secrets.TF_MODULES_SSH_DEPLOY_KEY }}"

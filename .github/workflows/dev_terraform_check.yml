@@ -7,7 +7,7 @@ on:
 jobs:
   plan:
     name: Plan Development Terraform
-    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v0.11.0
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v0.13.0
     permissions:
       packages: read
       contents: read

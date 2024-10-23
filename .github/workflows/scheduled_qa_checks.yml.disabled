@@ -1,4 +1,4 @@
-name: "[Analysis] Run scheduled QA checks"
+name: "Run scheduled QA checks"
 on:
   schedule:
     - cron: '0 7 * * 1'
@@ -35,11 +35,11 @@ on:
         default: true
 
 jobs:
-  run-qa-checks:
-    name: "Run checks against ${{ inputs.environment_name }} cloud configuration"
+  qa:
+    name: "Run QA checks against ${{ inputs.environment_name }} cloud configuration"
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-scheduled-qa.yml@main
     concurrency:
       group: "qa"
-    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-scheduled-qa.yml@main
     permissions:
       packages: read
       contents: read

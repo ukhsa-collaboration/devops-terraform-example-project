@@ -1,12 +1,12 @@
-name: "[Analysis] Run scheduled destroy job"
+name: "Run scheduled destroy job"
 on:
   schedule:
     - cron: '0 19 * * 1-5' # Every weekday at 19:00
 
 jobs:
-  dev_destroy:
-    name: Deploy Development Terraform
-    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-destroy.yml@v0.6.0
+  destroy:
+    name: Destroy Development Terraform
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-destroy.yml@v0.13.0
     permissions:
       packages: read
       contents: read

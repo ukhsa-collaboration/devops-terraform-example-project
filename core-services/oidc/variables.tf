@@ -1,4 +1,4 @@
-variable "allowed_audience" {
-  description = "The audience that can assume the AWS role"
+variable "environment_name" {
+  description = "The name of the environment. Used to create the OIDC permissions"
   type        = string
 }

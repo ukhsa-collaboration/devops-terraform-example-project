@@ -1,11 +1,53 @@
-module "aws-oidc-github" {
-  source = "git::ssh://git@github.com/UKHSA-Internal/devops-terraform-modules//terraform-modules/aws/oidc?ref=0491d5442d3e97d71a63dd14bfdc69a66e67551a"
+module "iam_github_oidc_provider" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-provider"
+  version = "5.47.1"
+}
 
-  repo_name = "UKHSA-Internal/devops-terraform-example-project"
-  additional_allowed_repos = {
-    "UKHSA-Internal/devops-github-reusable-workflows" = {
-      aud : var.allowed_audience
-    }
+module "iam_github_oidc_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-role"
+  version = "5.47.1"
+
+  name = "github-actions-oidc"
+
+  subjects = [
+    "UKHSA-Internal/devops-terraform-example-project:environment:${var.environment_name}",
+    "UKHSA-Internal/devops-github-reusable-workflows:environment:${var.environment_name}",
+  ]
+
+  policies = {
+    CIUser = aws_iam_policy.ci_user.arn
   }
-  allowed_refs = var.allowed_audience
+}
+
+resource "aws_iam_policy" "ci_user" {
+  name = "github-actions-oidc"
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:*",
+          "ecr:*",
+          "s3:*",
+          "servicediscovery:*",
+          "application-autoscaling:*",
+          "logs:*",
+          "elasticache:*",
+          "elasticloadbalancing:*",
+          "ecs:*",
+          "ec2:*"
+        ],
+        "Resource" : [
+          "*"
+        ],
+        "Condition" : {
+          "StringEquals" : {
+            "aws:RequestedRegion" : ["eu-west-2"]
+          }
+        }
+      }
+    ]
+  })
 }

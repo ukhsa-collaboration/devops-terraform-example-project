@@ -37,7 +37,7 @@ on:
 jobs:
   qa:
     name: "Run QA checks against ${{ inputs.environment_name }} cloud configuration"
-    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-scheduled-qa.yml@main
+    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-scheduled-qa.yml@main
     concurrency:
       group: "qa"
     permissions:

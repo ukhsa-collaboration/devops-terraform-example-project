@@ -26,7 +26,7 @@ With an AWS S3 backend, the state file for each stack is stored in at the key `<
 
 ## Order of Terraform Apply / `dependencies.json`
 
-In each Terraform stack, there is a `dependencies.json`. This **MUST** exist in each stack that you want to deploy. The content of this looks similar to the below and represents the direct dependencies of each stack. The [terraform-dependency-sort](https://github.com/UKHSA-Internal/devops-github-actions/tree/main/.github/actions/terraform-dependency-sort) action finds indirect dependencies of each stack and return a list of stacks, topgraphically sorted into the order it must be applied. This is then used by Github Actions to run the Terraform commands in the correct order of dependency.
+In each Terraform stack, there is a `dependencies.json`. This **MUST** exist in each stack that you want to deploy. The content of this looks similar to the below and represents the direct dependencies of each stack. The [terraform-dependency-sort](https://github.com/ukhsa-collaboration/devops-github-actions/tree/main/.github/actions/terraform-dependency-sort) action finds indirect dependencies of each stack and return a list of stacks, topgraphically sorted into the order it must be applied. This is then used by Github Actions to run the Terraform commands in the correct order of dependency.
 
 The dependencies.json **MUST** validate against the schema below. If there are no dependencies, `paths` can be a blank array.
 

@@ -10,8 +10,10 @@ module "iam_github_oidc_role" {
   name = "github-actions-oidc"
 
   subjects = [
-    "ukhsa-collaboration/devops-terraform-example-project:environment:${var.environment_name}",
-    "ukhsa-collaboration/devops-github-reusable-workflows:environment:${var.environment_name}",
+    "repo:ukhsa-collaboration/devops-terraform-example-project:environment:${var.environment_name}",
+    "repo:ukhsa-collaboration/devops-github-reusable-workflows:environment:${var.environment_name}",
+    "repo:UKHSA-Internal/devops-terraform-example-project:environment:dev",
+    "repo:UKHSA-Internal/devops-github-reusable-workflows:environment:dev"
   ]
 
   policies = {

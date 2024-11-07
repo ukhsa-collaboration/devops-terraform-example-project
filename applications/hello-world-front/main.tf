@@ -22,6 +22,22 @@ data "aws_subnets" "public" {
 
 data "aws_caller_identity" "current" {}
 
+resource "aws_ssm_parameter" "image_tag" {
+  #checkov:skip=CKV_AWS_337:The image tag is not considered sensitive
+  name  = "/helloworld/frontend/image_tag"
+  type  = "String"
+  value = "latest"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+data "aws_ssm_parameter" "image_tag" {
+  name = aws_ssm_parameter.image_tag.name
+}
+
+
 module "alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "v9.11.0"
@@ -104,7 +120,7 @@ module "ecs_service" {
       cpu       = 256
       memory    = 512
       essential = true
-      image     = "${module.ecr.repository_url}:${var.image_tag}"
+      image     = "${var.image_uri}:${data.aws_ssm_parameter.image_tag.value}"
       port_mappings = [
         {
           name          = "http"

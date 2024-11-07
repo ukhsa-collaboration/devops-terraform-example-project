@@ -3,10 +3,9 @@ variable "ecs_cluster_name" {
   type        = string
 }
 
-variable "image_tag" {
-  description = "The tag of the image to deploy"
+variable "image_uri" {
+  description = "The URI of Docker image to run without the tag. E.g. docker.io/postgres"
   type        = string
-  default     = "latest"
 }
 
 variable "vpc_cidr_block" {

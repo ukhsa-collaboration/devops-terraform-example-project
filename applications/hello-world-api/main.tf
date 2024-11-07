@@ -24,8 +24,6 @@ data "aws_subnets" "public" {
   }
 }
 
-data "aws_caller_identity" "current" {}
-
 resource "aws_ssm_parameter" "image_tag" {
   #checkov:skip=CKV_AWS_337:The image tag is not considered sensitive
   name  = "/helloworld/api/image_tag"

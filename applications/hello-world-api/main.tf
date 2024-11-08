@@ -24,7 +24,20 @@ data "aws_subnets" "public" {
   }
 }
 
-data "aws_caller_identity" "current" {}
+resource "aws_ssm_parameter" "image_tag" {
+  #checkov:skip=CKV_AWS_337:The image tag is not considered sensitive
+  name  = "/helloworld/api/image_tag"
+  type  = "String"
+  value = "latest"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+data "aws_ssm_parameter" "image_tag" {
+  name = aws_ssm_parameter.image_tag.name
+}
 
 module "ecs_service" {
   source  = "terraform-aws-modules/ecs/aws//modules/service"
@@ -53,7 +66,8 @@ module "ecs_service" {
       cpu       = 256
       memory    = 512
       essential = true
-      image     = "${module.ecr.repository_url}:${var.image_tag}"
+      image     = "${var.image_uri}:${data.aws_ssm_parameter.image_tag.value}"
+
       port_mappings = [
         {
           name          = "http"
@@ -107,33 +121,3 @@ module "ecs_service" {
   assign_public_ip = true
   subnet_ids       = data.aws_subnets.public.ids
 }
-
-module "ecr" {
-  source  = "terraform-aws-modules/ecr/aws"
-  version = "v2.3.0"
-
-  repository_name         = "hello-world-api"
-  repository_type         = "private"
-  repository_force_delete = true
-
-  repository_read_write_access_arns = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
-  create_lifecycle_policy           = true
-  repository_lifecycle_policy = jsonencode({
-    rules = [
-      {
-        rulePriority = 1,
-        description  = "Keep last image",
-        selection = {
-          tagStatus     = "tagged",
-          tagPrefixList = ["v"],
-          countType     = "imageCountMoreThan",
-          countNumber   = 1
-        },
-        action = {
-          type = "expire"
-        }
-      }
-    ]
-  })
-}
-

@@ -36,6 +36,22 @@ data "aws_ssm_parameter" "app_image_tag" {
 }
 
 
+resource "aws_ssm_parameter" "image_tag" {
+  #checkov:skip=CKV_AWS_337:The image tag is not considered sensitive
+  name  = "/helloworld/frontend/image_tag"
+  type  = "String"
+  value = "latest"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+data "aws_ssm_parameter" "image_tag" {
+  name = aws_ssm_parameter.image_tag.name
+}
+
+
 module "alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "v9.11.0"

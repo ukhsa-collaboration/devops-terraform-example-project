@@ -31,7 +31,7 @@ resource "aws_ssm_parameter" "image_tag" {
   }
 }
 
-data "aws_ssm_parameter" "image_tag" {
+data "aws_ssm_parameter" "app_image_tag" {
   name = aws_ssm_parameter.image_tag.name
 }
 
@@ -118,7 +118,7 @@ module "ecs_service" {
       cpu       = 256
       memory    = 512
       essential = true
-      image     = "${var.image_uri}:${data.aws_ssm_parameter.image_tag.value}"
+      image     = "${var.image_uri}:${data.aws_ssm_parameter.app_image_tag.value}"
       port_mappings = [
         {
           name          = "http"

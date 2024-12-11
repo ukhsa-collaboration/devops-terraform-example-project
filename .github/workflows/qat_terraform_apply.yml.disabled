@@ -10,7 +10,7 @@ on:
 jobs:
   deploy:
     name: Deploy QAT Terraform
-    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v0.15.0
+    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v2.0.0
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     concurrency:
       group: "qat-main"
@@ -28,3 +28,4 @@ jobs:
       AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID_QAT }}"
       AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}"
       TF_MODULES_SSH_DEPLOY_KEY: "${{ secrets.TF_MODULES_SSH_DEPLOY_KEY }}"
+      TF_PLAN_ENCRYPTION_PASSPHRASE: "${{ secrets.TF_PLAN_ENCRYPTION_PASSPHRASE }}"

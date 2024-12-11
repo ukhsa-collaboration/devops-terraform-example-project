@@ -1,4 +1,4 @@
-data "aws_availability_zones" "available" {
+ "aws_availability_zones" "available" {
   state = "available"
 }
 

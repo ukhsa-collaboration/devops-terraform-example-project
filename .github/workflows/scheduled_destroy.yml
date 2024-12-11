@@ -6,7 +6,7 @@ on:
 jobs:
   destroy:
     name: Destroy Development Terraform
-    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-destroy.yml@v0.15.0
+    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-destroy.yml@v2.0.0
     permissions:
       packages: read
       contents: read

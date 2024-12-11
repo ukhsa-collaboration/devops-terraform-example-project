@@ -21,3 +21,4 @@ jobs:
     secrets:
       AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID_DEV }}"
       AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}" 
+      TF_PLAN_ENCRYPTION_PASSPHRASE: "${{ secrets.TF_PLAN_ENCRYPTION_PASSPHRASE }}"

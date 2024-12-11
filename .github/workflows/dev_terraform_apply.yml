@@ -26,3 +26,4 @@ jobs:
       AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID_DEV }}"
       AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}" 
       TF_MODULES_SSH_DEPLOY_KEY: "${{ secrets.TF_MODULES_SSH_DEPLOY_KEY }}"
+      TF_PLAN_ENCRYPTION_PASSPHRASE: "${{ secrets.TF_PLAN_ENCRYPTION_PASSPHRASE }}"

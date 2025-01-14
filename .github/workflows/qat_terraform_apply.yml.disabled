@@ -10,7 +10,7 @@ on:
 jobs:
   deploy:
     name: Deploy QAT Terraform
-    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v2.0.0
+    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v2.2.0
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     concurrency:
       group: "qat-main"

@@ -1,5 +1,5 @@
 module "state_file" {
-  source                  = "git::ssh://git@github.com/UKHSA-Internal/devops-terraform-modules//terraform-modules/aws/state-file?ref=12028e3d7a05eab7526b8ef5746ae3c83a7ea020"
+  source                  = "git::ssh://git@github.com/ukhsa-collaboration/devops-terraform-modules//terraform-modules/aws/state-file?ref=12028e3d7a05eab7526b8ef5746ae3c83a7ea020"
   iam_principals          = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/github-actions-oidc"]
   state_bucket_kms_key_id = aws_kms_key.state_file.arn
   region_name             = data.aws_region.current.name

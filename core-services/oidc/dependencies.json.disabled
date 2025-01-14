@@ -1,7 +1,0 @@
-// Disabled to prevent scheduled `terraform destroy` from attempting to destroy this stack.
-{
-    "dependencies": {
-        "paths": []
-    },
-    "skip_when_destroying": true // TODO: Implement this as part of DOE-330
-}

@@ -7,7 +7,7 @@ on:
 jobs:
   plan:
     name: Plan Development Terraform
-    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@main
+    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v2.2.0
     permissions:
       packages: read
       contents: read
@@ -21,3 +21,4 @@ jobs:
     secrets:
       AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID_DEV }}"
       AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}" 
+      TF_PLAN_ENCRYPTION_PASSPHRASE: "${{ secrets.TF_PLAN_ENCRYPTION_PASSPHRASE }}"

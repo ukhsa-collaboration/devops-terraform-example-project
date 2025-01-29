@@ -39,7 +39,8 @@ resource "aws_iam_policy" "ci_user" {
           "elasticache:*",
           "elasticloadbalancing:*",
           "ecs:*",
-          "ec2:*"
+          "ec2:*",
+          "kms:*"
         ],
         "Resource" : [
           "*"

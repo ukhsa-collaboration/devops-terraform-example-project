@@ -10,7 +10,7 @@ on:
 jobs:
   deploy:
     name: Deploy Production Terraform
-    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v2.2.0
+    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@v2.7.0
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     concurrency:
       group: "prd-main"

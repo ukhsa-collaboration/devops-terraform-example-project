@@ -1,3 +1,4 @@
+# This will destroy everything including stacks marked with "skip_destroy: True" so is temporarily disabled.
 name: "Run scheduled destroy job"
 on:
   schedule:

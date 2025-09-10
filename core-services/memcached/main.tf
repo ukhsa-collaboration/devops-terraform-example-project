@@ -23,7 +23,7 @@ module "elasticache" {
 
   create_cluster           = true
   create_replication_group = false
-  cluster_id               = "memcached-cluster"
+  cluster_id               = "memcached-cluster-test"
   engine                   = "memcached"
   node_type                = "cache.t2.micro"
   num_cache_nodes          = 1

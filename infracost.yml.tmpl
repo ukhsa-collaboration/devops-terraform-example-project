@@ -6,7 +6,7 @@ projects:
     name: {{ $stack.app }}-{{ $env.name }}
     terraform_var_files:
     {{- if pathExists (trimSuffix $stack._path "dependencies.json") (printf "tfvars/%s.tfvars" $env.name) }}
-      - {{ trimSuffix $stack._path "dependencies.json" }}tfvars/{{ $env.name }}.tfvars
+      - tfvars/{{ $env.name }}.tfvars
     {{- end }}
       - ../../globals.tfvars
       - ../../environment/{{ $env.name }}.tfvars

@@ -7,7 +7,7 @@ on:
 jobs:
   dev:
     name: Plan Development Terraform
-    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan.yml@v2.7.0
+    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan.yml@v3.1.0
     permissions: write-all
     with:
       environment_name: dev
@@ -20,7 +20,7 @@ jobs:
 
   # qat:
   #   name: Plan QAT Terraform
-  #   uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan.yml@v2.7.0
+  #   uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan.yml@v3.1.0
   #   permissions: write-all
   #   with:
   #     environment_name: qat
@@ -31,7 +31,7 @@ jobs:
 
   # prd:
   #   name: Plan Production Terraform
-  #   uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan.yml@v2.7.0
+  #   uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan.yml@v3.1.0
   #   permissions: write-all
   #   with:
   #     environment_name: prd

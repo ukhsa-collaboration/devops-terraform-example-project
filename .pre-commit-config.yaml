@@ -14,13 +14,7 @@ repos:
         args:
          - --args=--recursive
       - id: terraform_tflint
-        args:
-         - --args=--recursive --disable-rule terraform_required_version --disable-rule terraform_required_providers
   - repo: https://github.com/zricethezav/gitleaks
     rev: v8.18.4
     hooks:
     - id: gitleaks
-  - repo: https://github.com/psf/black
-    rev: 24.4.2
-    hooks:
-    - id: black

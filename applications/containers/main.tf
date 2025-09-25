@@ -148,7 +148,7 @@ module "alb" {
 # - Service has no public IP; ingress flows only from the ALB SG. Tasks run in private subnets.
 # - SG egress is open (0.0.0.0/0, tcp) — tighten if you know exact egress needs (DB, APIs).
 # - `readonly_root_filesystem = true` hardens the container; keep writing to ephemeral/task volumes only.
-# This may not be possible with all containers and Fargate does not make it easy to use tmpfs as an alternative. 
+# This may not be possible with all containers and Fargate does not make it easy to use tmpfs as an alternative.
 # See https://github.com/aws/containers-roadmap/issues/736
 # - Ensure task/execution IAM roles are least-privilege.
 # - Consider health check settings on the target group and container to match app readiness.

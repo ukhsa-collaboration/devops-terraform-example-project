@@ -4,7 +4,7 @@ on:
     workflows: ["Deploy Terraform stacks to QAT"]
     types:
       - completed
-    branches: 
+    branches:
       - main
 
 jobs:
@@ -26,6 +26,6 @@ jobs:
       execute_terraform_plan: true
     secrets:
       AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID_PRD }}"
-      AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}" 
+      AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}"
       TF_MODULES_SSH_DEPLOY_KEY: "${{ secrets.TF_MODULES_SSH_DEPLOY_KEY }}"
       TF_PLAN_ENCRYPTION_PASSPHRASE: "${{ secrets.TF_PLAN_ENCRYPTION_PASSPHRASE }}"

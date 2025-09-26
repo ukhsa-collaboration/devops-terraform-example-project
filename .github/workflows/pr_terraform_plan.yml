@@ -7,35 +7,35 @@ on:
 jobs:
   dev:
     name: Plan Development Terraform
-    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan.yml@v2.7.0
+    uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan.yml@v3.1.0
     permissions: write-all
     with:
       environment_name: dev
     secrets:
       AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID_DEV }}"
-      AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}" 
+      AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}"
       TF_PLAN_ENCRYPTION_PASSPHRASE: "${{ secrets.TF_PLAN_ENCRYPTION_PASSPHRASE }}"
 
   # There is no QAT or Prod for the example-project but this is left for demonstration purposes.
 
   # qat:
   #   name: Plan QAT Terraform
-  #   uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan.yml@v2.7.0
+  #   uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan.yml@v3.1.0
   #   permissions: write-all
   #   with:
   #     environment_name: qat
   #   secrets:
   #     AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID_DEV }}"
-  #     AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}" 
+  #     AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}"
   #     TF_PLAN_ENCRYPTION_PASSPHRASE: "${{ secrets.TF_PLAN_ENCRYPTION_PASSPHRASE }}"
 
   # prd:
   #   name: Plan Production Terraform
-  #   uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan.yml@v2.7.0
+  #   uses: ukhsa-collaboration/devops-github-reusable-workflows/.github/workflows/terraform-plan.yml@v3.1.0
   #   permissions: write-all
   #   with:
   #     environment_name: prd
   #   secrets:
   #     AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID_DEV }}"
-  #     AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}" 
+  #     AWS_ROLE_NAME: "${{ secrets.AWS_ROLE_NAME }}"
   #     TF_PLAN_ENCRYPTION_PASSPHRASE: "${{ secrets.TF_PLAN_ENCRYPTION_PASSPHRASE }}"

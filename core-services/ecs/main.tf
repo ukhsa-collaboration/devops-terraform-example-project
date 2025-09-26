@@ -1,17 +1,16 @@
-
 module "ecs_cluster" {
   source  = "terraform-aws-modules/ecs/aws//modules/cluster"
-  version = "v5.11.4"
+  version = "v6.2.2"
 
-  cluster_name                          = var.ecs_cluster_name
-  default_capacity_provider_use_fargate = true
+  name = var.ecs_cluster_name
 
-  cluster_service_connect_defaults = {
-    namespace = aws_service_discovery_http_namespace.helloworld.arn
+  default_capacity_provider_strategy = {
+    FARGATE = {
+      weight = 50
+      base   = 20
+    }
+    FARGATE_SPOT = {
+      weight = 50
+    }
   }
-}
-
-resource "aws_service_discovery_http_namespace" "helloworld" {
-  name        = "helloworld"
-  description = "example"
 }

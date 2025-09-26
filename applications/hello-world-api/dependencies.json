@@ -1,7 +1,0 @@
-{
-    "dependencies": {
-        "paths": [
-            "./applications/hello-world-front"
-        ]
-    }
-}

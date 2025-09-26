@@ -15,8 +15,6 @@ This repository contains the Terraform configurations to deploy the `hello-world
   - `dev.tfvars`: Terraform variables for the development environment.
   - `prod.tfvars`: Terraform variables for the production environment.
 - `global.tfvars`: Global Terraform variables.
-- `providers.tf`: Terraform provider configurations. If this file doesn't exist within the stack directory, the providers.tf at the root of the directory is copied during the Github Actions workflow to where it is needed. CLI flags are then passed in to use the correct backend.
-- `terraform.tf`: Terraform version configuration. If this file doesn't exist within the stack directory, the terraform.tf at the root of the directory is copied during the Github Actions workflow to where it is needed.
 
 ## Terraform Stacks
 
@@ -78,10 +76,9 @@ The dependencies.json **MUST** validate against the schema below. If there are n
 
 ## Usage of Terraform AWS Modules
 
-Where necessary and possible, this repository leverages community-maintained `terraform-aws-modules` to simplify and standardise the creation of AWS resources. These modules provide best practices, reduced boilerplate, and easier maintenance.
+Where necessary and possible, this repository leverages community-maintained `terraform-aws-modules` to simplify and standardise the creation of AWS resources.
 
 - [terraform-aws-vpc](https://github.com/terraform-aws-modules/terraform-aws-vpc): Used in `network` to create a Virtual Private Cloud (VPC) with subnets, route tables, and other necessary components.
 - [terraform-aws-ecs](https://github.com/terraform-aws-modules/terraform-aws-ecs): Used in `ecs` to create the ECS cluster and used in by both `hello-world-api` and `hello-world-front` to create ECS service and tasks.
-- [terraform-aws-elasticache](https://github.com/terraform-aws-modules/terraform-aws-elasticache): Used in `memcached`
 
 For more information on the specific modules used and their configurations, refer to the individual Terraform configuration files in each directory.

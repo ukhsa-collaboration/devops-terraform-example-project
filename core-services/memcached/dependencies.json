@@ -1,7 +1,0 @@
-{
-    "dependencies": {
-        "paths": [
-            "./core-services/network"
-        ]
-    }
-}

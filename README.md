@@ -1,26 +1,23 @@
 # Hello World Service Infrastructure
 
-This repository contains the Terraform configurations to deploy the `hello-world` service, consisting of two applications: [hello-world-frontend](https://github.com/ntsedemoorg/hello-world-front) and [hello-world-api](https://github.com/ntsedemoorg/hello-world-api). This Terraform repo sets up the necessary AWS infrastructure to run the applications, including networking, ECS, and Memcached.
+This repository contains the Terraform configurations to deploy the `hello-world` service, consisting of two applications: [hello-world-front](https://github.com/ukhsa-collaboration/devops-hello-world-front) and [hello-world-api](https://github.com/ukhsa-collaboration/devops-hello-world-api). This Terraform repo sets up the necessary AWS infrastructure to run the applications.
 
 ## Project Structure
 
 - `applications/`
-  - `hello-world-frontend/`: Terraform configuration for deploying the frontend application.
-  - `hello-world-api/`: Terraform configuration for deploying the backend API.
+  - `containers/`: Terraform configuration for deploying the frontend and backend applications.
 - `core-services/`
   - `network/`: Terraform configuration for setting up the network infrastructure (VPC, subnets, etc.).
   - `ecs/`: Terraform configuration for setting up the ECS cluster and services.
-  - `memcached/`: Terraform configuration for setting up the Memcached instance.
 - `environment/`
   - `dev.tfvars`: Terraform variables for the development environment.
-  - `prod.tfvars`: Terraform variables for the production environment.
 - `global.tfvars`: Global Terraform variables.
 
 ## Terraform Stacks
 
 Each directory in the `core-services` and `applications` folders has its own Terraform state file. Each directory is called a 'stack'. This isolation allows for modular and independent management of each component of the infrastructure, facilitating easier updates and rollbacks.
 
-With an AWS S3 backend, the state file for each stack is stored in at the key `<environment name>/<directory name>/state.tfstate` in the state bucket. For example, the state file for the `hello-world-api` stack in the `development` environment would be `development/hello-world-api/state.tfstate`.
+With an AWS S3 backend, the state file for each stack is stored in at the key `<environment name>/<directory name>/state.tfstate` in the state bucket. For example, the state file for the `containers` stack in the `dev` environment would be `dev/containers/state.tfstate`.
 
 ## Order of Terraform Apply / `dependencies.json`
 
@@ -57,8 +54,7 @@ The dependencies.json **MUST** validate against the schema below. If there are n
 {
     "dependencies": {
         "paths": [
-            "./core-services/ecs",
-            "./core-services/memcached"
+            "./core-services/ecs"
         ]
     }
 }
@@ -73,12 +69,3 @@ The dependencies.json **MUST** validate against the schema below. If there are n
     }
 }
 ```
-
-## Usage of Terraform AWS Modules
-
-Where necessary and possible, this repository leverages community-maintained `terraform-aws-modules` to simplify and standardise the creation of AWS resources.
-
-- [terraform-aws-vpc](https://github.com/terraform-aws-modules/terraform-aws-vpc): Used in `network` to create a Virtual Private Cloud (VPC) with subnets, route tables, and other necessary components.
-- [terraform-aws-ecs](https://github.com/terraform-aws-modules/terraform-aws-ecs): Used in `ecs` to create the ECS cluster and used in by both `hello-world-api` and `hello-world-front` to create ECS service and tasks.
-
-For more information on the specific modules used and their configurations, refer to the individual Terraform configuration files in each directory.

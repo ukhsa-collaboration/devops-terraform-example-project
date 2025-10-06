@@ -45,7 +45,7 @@ resource "aws_ssm_parameter" "backend_image_tag" {
 }
 
 data "aws_ssm_parameter" "backend_image_tag" {
-  name = aws_ssm_parameter.frontend_image_tag.name
+  name = aws_ssm_parameter.backend_image_tag.name
 }
 ########################################################################################################
 # END SSM PARAMETERS

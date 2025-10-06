@@ -301,6 +301,16 @@ module "backend_ecs_service" {
           protocol      = "tcp"
         }
       ]
+      environment = [
+        {
+          name  = "ALLOWED_HOST"
+          value = ".${module.alb.dns_name}"
+        },
+        {
+          name  = "CORS_ALLOWED_ORIGIN"
+          value = "http://${module.alb.dns_name}"
+        }
+      ]
       readonlyRootFilesystem = false
 
       logConfiguration = {

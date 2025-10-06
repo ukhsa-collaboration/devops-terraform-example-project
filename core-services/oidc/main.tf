@@ -41,6 +41,7 @@ module "iam_app_deployer" {
 
   oidc_subjects = [
     "ukhsa-collaboration/devops-hello-world-api:environment:${var.environment_name}",
+    "ukhsa-collaboration/devops-hello-world-frontend:environment:${var.environment_name}",
   ]
 
   policies = {

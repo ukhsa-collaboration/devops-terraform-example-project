@@ -76,7 +76,7 @@ module "alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "v10.0.0"
 
-  name    = "aw-hw-euw2-${var.environment_name}-alb-public"
+  name    = "aw-helloworld-euw2-${var.environment_name}-alb-public"
   vpc_id  = data.aws_vpc.main.id
   subnets = data.aws_subnets.public.ids
 
@@ -164,7 +164,7 @@ module "frontend_ecs_service" {
   source  = "terraform-aws-modules/ecs/aws//modules/service"
   version = "6.4.0"
 
-  name          = "aw-hello-world-euw2-${var.environment_name}-ecssvc-frontend"
+  name          = "aw-helloworld-euw2-${var.environment_name}-ecssvc-frontend"
   cluster_arn   = data.aws_ecs_cluster.main.arn
   desired_count = 1
   cpu           = 256
@@ -173,10 +173,10 @@ module "frontend_ecs_service" {
   autoscaling_scheduled_actions = var.scheduled_scaledown ? local.scheduled_scaledown_policy : {}
 
 
-  tasks_iam_role_name            = "aw-hello-world-global-${var.environment_name}-iamrole-task-frontend"
+  tasks_iam_role_name            = "aw-helloworld-global-${var.environment_name}-iamrole-task-frontend"
   tasks_iam_role_use_name_prefix = false
 
-  task_exec_iam_role_name            = "aw-hello-world-global-${var.environment_name}-iamrole-taskexec-frontend"
+  task_exec_iam_role_name            = "aw-helloworld-global-${var.environment_name}-iamrole-taskexec-frontend"
   task_exec_iam_role_use_name_prefix = false
 
 
@@ -197,7 +197,7 @@ module "frontend_ecs_service" {
       environment = [
         {
           name  = "API_URL"
-          value = "http://hello-world-api:8080"
+          value = "http://helloworld-api:8080"
         }
       ]
 
@@ -209,7 +209,7 @@ module "frontend_ecs_service" {
       }
       enable_cloudwatch_logging              = true
       create_cloudwatch_log_group            = true
-      cloudwatch_log_group_name              = "/aws/ecs/hello-world-example/hello-world-front"
+      cloudwatch_log_group_name              = "/aws/ecs/helloworld-example/helloworld-front"
       cloudwatch_log_group_retention_in_days = 1
 
       memoryReservation = 100
@@ -250,7 +250,7 @@ module "backend_ecs_service" {
   source  = "terraform-aws-modules/ecs/aws//modules/service"
   version = "6.4.0"
 
-  name          = "aw-hello-world-euw2-${var.environment_name}-ecssvc-backend"
+  name          = "aw-helloworld-euw2-${var.environment_name}-ecssvc-backend"
   cluster_arn   = data.aws_ecs_cluster.main.arn
   desired_count = 1
   cpu           = 256
@@ -258,10 +258,10 @@ module "backend_ecs_service" {
 
   autoscaling_scheduled_actions = var.scheduled_scaledown ? local.scheduled_scaledown_policy : {}
 
-  tasks_iam_role_name            = "aw-hello-world-global-${var.environment_name}-iamrole-task-backend"
+  tasks_iam_role_name            = "aw-helloworld-global-${var.environment_name}-iamrole-task-backend"
   tasks_iam_role_use_name_prefix = false
 
-  task_exec_iam_role_name            = "aw-hello-world-global-${var.environment_name}-iamrole-taskexec-backend"
+  task_exec_iam_role_name            = "aw-helloworld-global-${var.environment_name}-iamrole-taskexec-backend"
   task_exec_iam_role_use_name_prefix = false
 
   container_definitions = {
@@ -286,7 +286,7 @@ module "backend_ecs_service" {
       }
       enable_cloudwatch_logging              = true
       create_cloudwatch_log_group            = true
-      cloudwatch_log_group_name              = "/aws/ecs/hello-world-example/hello-world-backend"
+      cloudwatch_log_group_name              = "/aws/ecs/helloworld-example/helloworld-backend"
       cloudwatch_log_group_retention_in_days = 1
 
       memoryReservation = 100
@@ -336,7 +336,7 @@ data "aws_iam_role" "deployer" {
 }
 
 resource "aws_iam_policy" "deployer" {
-  name        = "aw-hello-world-euw2-${var.environment_name}-iampolicy-task-passrole"
+  name        = "aw-helloworld-euw2-${var.environment_name}-iampolicy-task-passrole"
   description = "Policy to allow GitHub Actions to PassRole for frontend and backend ECS roles"
   policy = jsonencode({
     Version = "2012-10-17",

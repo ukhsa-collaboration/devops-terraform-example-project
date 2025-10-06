@@ -303,11 +303,11 @@ module "backend_ecs_service" {
       ]
       environment = [
         {
-          name  = "ALLOWED_HOST"
+          name  = "ALLOWED_HOSTS"
           value = ".${module.alb.dns_name}"
         },
         {
-          name  = "CORS_ALLOWED_ORIGIN"
+          name  = "CORS_ALLOWED_ORIGINS"
           value = "http://${module.alb.dns_name}"
         }
       ]

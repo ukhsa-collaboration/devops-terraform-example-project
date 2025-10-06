@@ -219,7 +219,7 @@ module "frontend_ecs_service" {
       environment = [
         {
           name  = "NEXT_PUBLIC_API_BASE_URL"
-          value = "http://${module.alb.dns_name}"
+          value = "http://${module.alb.dns_name}/api"
         }
       ]
 

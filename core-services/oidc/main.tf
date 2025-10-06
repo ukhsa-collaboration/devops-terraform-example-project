@@ -40,8 +40,10 @@ module "iam_app_deployer" {
   enable_github_oidc = true
 
   oidc_subjects = [
-    "ukhsa-collaboration/devops-hello-world-api:environment:${var.environment_name}",
-    "ukhsa-collaboration/devops-hello-world-frontend:environment:${var.environment_name}",
+    "repo:ukhsa-collaboration/devops-hello-world-api:environment:${var.environment_name}",
+    "repo:ukhsa-collaboration/devops-hello-world-frontend:environment:${var.environment_name}",
+    "repo:ukhsa-collaboration/devops-hello-world-api:ref:refs/heads/main",
+    "repo:ukhsa-collaboration/devops-hello-world-frontend:ref:refs/heads/main",
   ]
 
   policies = {

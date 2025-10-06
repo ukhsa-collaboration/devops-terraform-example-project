@@ -61,7 +61,7 @@ data "aws_ssm_parameter" "backend_image_tag" {
 # What this does:
 # - Provisions an internet-facing Application Load Balancer in public subnets.
 # - Opens SG ingress for ports 80/443 from anywhere; forwards HTTP:80 to the target group.
-# - Creates a target group for the frontend service (IP targets on port 5000). The ECS service
+# - Creates a target group for the frontend service (IP targets on port 3000). The ECS service
 #   will attach tasks to this target group (attachment managed inside of the ECS module call).
 
 # Security & ops notes:
@@ -112,6 +112,22 @@ module "alb" {
       forward = {
         target_group_key = "frontend_tg"
       }
+
+      rules = {
+        auth = {
+          actions = [{
+            forward = {
+              target_group_key = "backend_tg"
+            }
+          }]
+
+          conditions = [{
+            path_pattern = {
+              values = ["/api"]
+            }
+          }]
+        }
+      }
     }
   }
 
@@ -119,11 +135,17 @@ module "alb" {
     frontend_tg = {
       name_prefix       = "front"
       protocol          = "HTTP"
-      port              = 5000
+      port              = 3000
       target_type       = "ip"
       create_attachment = false
     }
-
+    backend_tg = {
+      name_prefix       = "back"
+      protocol          = "HTTP"
+      port              = 8000
+      target_type       = "ip"
+      create_attachment = false
+    }
   }
 }
 
@@ -189,15 +211,15 @@ module "frontend_ecs_service" {
       portMappings = [
         {
           name          = "http"
-          containerPort = 5000
-          hostPort      = 5000
+          containerPort = 3000
+          hostPort      = 3000
           protocol      = "tcp"
         }
       ]
       environment = [
         {
-          name  = "API_URL"
-          value = "http://helloworld-api:8080"
+          name  = "NEXT_PUBLIC_API_BASE_URL"
+          value = "http://${module.alb.dns_name}"
         }
       ]
 
@@ -220,14 +242,14 @@ module "frontend_ecs_service" {
     service = {
       target_group_arn = module.alb.target_groups.frontend_tg.arn
       container_name   = "app"
-      container_port   = 5000
+      container_port   = 3000
     }
   }
 
   security_group_ingress_rules = {
-    alb_5000 = {
-      from_port                    = 5000
-      to_port                      = 5000
+    alb_3000 = {
+      from_port                    = 3000
+      to_port                      = 3000
       ip_protocol                  = "tcp"
       description                  = "Ingress from ALB"
       referenced_security_group_id = module.alb.security_group_id
@@ -274,8 +296,8 @@ module "backend_ecs_service" {
       portMappings = [
         {
           name          = "http"
-          containerPort = 8080
-          hostPort      = 8080
+          containerPort = 8000
+          hostPort      = 8000
           protocol      = "tcp"
         }
       ]
@@ -294,7 +316,7 @@ module "backend_ecs_service" {
   }
 
   security_group_ingress_rules = {
-    alb_8080 = {
+    alb_8000 = {
       from_port                    = 8000
       to_port                      = 8000
       ip_protocol                  = "tcp"

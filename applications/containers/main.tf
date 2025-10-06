@@ -76,7 +76,7 @@ module "alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "v10.0.0"
 
-  name    = "aw-helloworld-euw2-${var.environment_name}-alb-public"
+  name    = "aw-helloworld-euw2-${var.environment_name}-alb-pub"
   vpc_id  = data.aws_vpc.main.id
   subnets = data.aws_subnets.public.ids
 

@@ -315,6 +315,14 @@ module "backend_ecs_service" {
     }
   }
 
+  load_balancer = {
+    service = {
+      target_group_arn = module.alb.target_groups.backend_tg.arn
+      container_name   = "app"
+      container_port   = 8000
+    }
+  }
+
   security_group_ingress_rules = {
     alb_8000 = {
       from_port                    = 8000

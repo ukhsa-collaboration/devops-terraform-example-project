@@ -202,7 +202,7 @@ module "frontend_ecs_service" {
       ]
 
 
-      readonlyRootFilesystem = true
+      readonlyRootFilesystem = false
 
       logConfiguration = {
         logDriver = "awslogs"
@@ -279,7 +279,7 @@ module "backend_ecs_service" {
           protocol      = "tcp"
         }
       ]
-      readonlyRootFilesystem = true
+      readonlyRootFilesystem = false
 
       logConfiguration = {
         logDriver = "awslogs"

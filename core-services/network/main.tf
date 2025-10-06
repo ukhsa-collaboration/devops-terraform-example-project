@@ -13,5 +13,8 @@ module "vpc" {
   private_subnets = local.private_subnet_cidrs
   public_subnets  = local.public_subnet_cidrs
 
+  enable_nat_gateway = true
+  single_nat_gateway = true
+
   create_igw = true
 }

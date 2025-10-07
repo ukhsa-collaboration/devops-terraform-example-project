@@ -145,6 +145,18 @@ module "alb" {
       port              = 8000
       target_type       = "ip"
       create_attachment = false
+
+      health_check = {
+        enabled             = true
+        interval            = 30
+        path                = "/health"
+        port                = "traffic-port"
+        healthy_threshold   = 3
+        unhealthy_threshold = 3
+        timeout             = 6
+        protocol            = "HTTP"
+        matcher             = "200-399"
+      }
     }
   }
 }

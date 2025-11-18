@@ -1,67 +1,110 @@
-module "state_file" {
-  source                  = "git::https://github.com/ukhsa-collaboration/devops-terraform-modules.git//terraform-modules/aws/state-file?ref=cebc90e87e2250fcc473e250f7008990fae50737"
-  iam_principals          = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/github-actions-oidc"]
-  state_bucket_kms_key_id = aws_kms_key.state_file.arn
-  region_name             = data.aws_region.current.name
+module "iam_github_oidc_provider" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-oidc-provider"
+  version = "6.0.0"
+
+  url = "https://token.actions.githubusercontent.com"
 }
 
-resource "aws_kms_key" "state_file" {
-  description             = "Key used to encrypt both the state and logs buckets"
-  enable_key_rotation     = true
-  deletion_window_in_days = 14
+### The github-actions-oidc role is used to deploy Terraform code.
+module "iam_github_oidc_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
+  version = "6.0.0"
+
+  name            = "github-actions-oidc"
+  use_name_prefix = false
+
+  enable_github_oidc = true
+
+  oidc_subjects = [
+    "repo:ukhsa-collaboration/devops-terraform-example-project:environment:${var.environment_name}",
+    "repo:ukhsa-collaboration/devops-github-reusable-workflows:environment:${var.environment_name}",
+    "repo:UKHSA-Internal/devops-terraform-example-project:environment:dev",
+    "repo:UKHSA-Internal/devops-github-reusable-workflows:environment:dev"
+  ]
+
+  policies = {
+    AdministratorAccess = "arn:aws:iam::aws:policy/AdministratorAccess"
+  }
 }
 
-resource "aws_kms_key_policy" "state_file" {
-  key_id = aws_kms_key.state_file.id
-  policy = jsonencode({
-    Id = "Allow Github Actions user to use state file encryption key"
-    Statement = [
-      {
-        Sid    = "Enable IAM User Permissions"
-        Effect = "Allow"
-        Principal = {
-          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/github-actions-oidc"
-        }
-        Action = [
-          "kms:Encrypt",
-          "kms:Decrypt",
-          "kms:ReEncrypt*",
-          "kms:GenerateDataKey*",
-          "kms:DescribeKey"
-        ]
-        Resource = "*"
-      },
-      {
-        Sid    = "Allow Logs Service to use the key"
-        Effect = "Allow"
-        Principal = {
-          Service = "logs.${data.aws_region.current.name}.amazonaws.com"
-        }
-        Action = [
-          "kms:Encrypt",
-          "kms:Decrypt",
-          "kms:ReEncrypt*",
-          "kms:GenerateDataKey*",
-          "kms:DescribeKey"
-        ]
-        Resource = "*"
-      },
-      {
-        Sid    = "Enable IAM User Permissions"
-        Effect = "Allow"
-        Principal = {
-          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
-        }
-        Action = [
-          "kms:*"
-        ]
-        Resource = "*"
-      }
+### The github-actions-app-deployer-oidc has more limited permissions than the github-actions-oidc role and is used
+### to deploy applications. This will need to be adjusted for different projects, depending on what type of resources
+### need to be deployed.
+module "iam_app_deployer" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
+  version = "6.0.0"
+
+  name            = "github-actions-app-deployer-oidc"
+  use_name_prefix = false
+
+  enable_github_oidc = true
+
+  oidc_subjects = [
+    "repo:ukhsa-collaboration/devops-hello-world-api:environment:${var.environment_name}",
+    "repo:ukhsa-collaboration/devops-hello-world-frontend:environment:${var.environment_name}",
+    "repo:ukhsa-collaboration/devops-hello-world-api:ref:refs/heads/main",
+    "repo:ukhsa-collaboration/devops-hello-world-frontend:ref:refs/heads/main",
+  ]
+
+  policies = {
+    AppDeployer = aws_iam_policy.app_deployer.arn
+  }
+}
+
+resource "aws_iam_policy" "app_deployer" {
+  name        = "github-actions-app-deployer"
+  path        = "/"
+  description = "Policy used by by the Github App Deployer IAM policy"
+
+  policy = data.aws_iam_policy_document.app_deployer.json
+}
+
+data "aws_iam_policy_document" "app_deployer" {
+  #checkov:skip=CKV_AWS_356:Allow App Deployer to deploy to ECS
+  statement {
+    sid = "AllowECSDeployments"
+    actions = [
+      "ecs:RunTask",
+      "ecs:DeregisterContainerInstance",
+      "ecs:RegisterTaskDefinition",
+      "ecs:StartTask",
+      "ecs:Describe*",
+      "ecs:List*",
+      "ecs:UpdateService"
     ]
-    Version = "2012-10-17"
-  })
+    effect    = "Allow"
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:RequestedRegion"
+
+      values = ["eu-west-2"]
+    }
+  }
+
+  statement {
+    sid = "AllowECRPush"
+    actions = [
+      "ecr:CompleteLayerUpload",
+      "ecr:GetAuthorizationToken",
+      "ecr:UploadLayerPart",
+      "ecr:InitiateLayerUpload",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:PutImage",
+      "ecr:BatchGetImage"
+    ]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+
+  statement {
+    sid = "AllowSSMUpdate"
+    actions = [
+      "ssm:PutParameter"
+    ]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+
+  version = "2012-10-17"
 }
-
-data "aws_region" "current" {}
-
-data "aws_caller_identity" "current" {}

@@ -1,2 +1,2 @@
-frontend_image_uri = "636728427214.dkr.ecr.eu-west-2.amazonaws.com/helloworld/frontend"
-backend_image_uri  = "636728427214.dkr.ecr.eu-west-2.amazonaws.com/helloworld/backend"
+frontend_image_uri = "ADD_YOUR_IMAGE"
+backend_image_uri  = "ADD_YOUR_IMAGE"
